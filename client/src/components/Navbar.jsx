@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Palette } from 'lucide-react';
+import { Palette, Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const [theme, setTheme] = useState('default');
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+      if (window.innerWidth > 768) {
+        setIsMenuOpen(false);
+      }
+    };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   const changeTheme = (newTheme) => {
@@ -32,10 +45,10 @@ export default function Navbar() {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    background: isScrolled ? 'var(--bg-glass)' : 'transparent',
-    borderBottom: isScrolled ? '1px solid var(--border-color)' : '1px solid transparent',
-    backdropFilter: isScrolled ? 'blur(16px)' : 'none',
-    WebkitBackdropFilter: isScrolled ? 'blur(16px)' : 'none',
+    background: isScrolled || (isMobile && isMenuOpen) ? 'var(--bg-glass)' : 'transparent',
+    borderBottom: isScrolled || (isMobile && isMenuOpen) ? '1px solid var(--border-color)' : '1px solid transparent',
+    backdropFilter: isScrolled || (isMobile && isMenuOpen) ? 'blur(16px)' : 'none',
+    WebkitBackdropFilter: isScrolled || (isMobile && isMenuOpen) ? 'blur(16px)' : 'none',
     transition: 'all 0.3s ease',
   };
 
@@ -51,10 +64,19 @@ export default function Navbar() {
   };
 
   const menuStyles = {
-    display: 'flex',
+    display: isMobile ? (isMenuOpen ? 'flex' : 'none') : 'flex',
+    flexDirection: isMobile ? 'column' : 'row',
     alignItems: 'center',
-    gap: '32px',
+    gap: isMobile ? '20px' : '32px',
     listStyle: 'none',
+    position: isMobile ? 'absolute' : 'static',
+    top: isMobile ? '100%' : 'auto',
+    left: 0,
+    width: isMobile ? '100%' : 'auto',
+    background: isMobile ? 'rgba(9, 11, 17, 0.98)' : 'transparent',
+    borderBottom: isMobile ? '1px solid var(--border-color)' : 'none',
+    padding: isMobile ? '24px 0' : 0,
+    transition: 'all 0.3s ease',
   };
 
   const linkStyles = {
@@ -90,6 +112,15 @@ export default function Navbar() {
     fontWeight: '500',
   };
 
+  const burgerBtnStyles = {
+    display: isMobile ? 'block' : 'none',
+    background: 'transparent',
+    border: 'none',
+    color: 'var(--text-primary)',
+    cursor: 'pointer',
+    outline: 'none',
+  };
+
   return (
     <nav style={navStyles}>
       <a href="#hero" style={logoStyles}>
@@ -98,12 +129,17 @@ export default function Navbar() {
         <span style={{ color: 'var(--accent-primary)', fontSize: '1.8rem' }}>/&gt;</span>
       </a>
 
+      {/* Hamburger Menu Toggle Button */}
+      <button style={burgerBtnStyles} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
       <ul style={menuStyles}>
-        <li><a href="#hero" style={linkStyles} onMouseEnter={(e) => e.target.style.color = 'var(--accent-primary)'} onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}>Home</a></li>
-        <li><a href="#skills" style={linkStyles} onMouseEnter={(e) => e.target.style.color = 'var(--accent-primary)'} onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}>Skills</a></li>
-        <li><a href="#projects" style={linkStyles} onMouseEnter={(e) => e.target.style.color = 'var(--accent-primary)'} onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}>Projects</a></li>
-        <li><a href="#contact" style={linkStyles} onMouseEnter={(e) => e.target.style.color = 'var(--accent-primary)'} onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}>Contact</a></li>
-        <li><a href="/prakash_resume.pdf" target="_blank" rel="noreferrer" style={linkStyles} onMouseEnter={(e) => e.target.style.color = 'var(--accent-primary)'} onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}>Resume</a></li>
+        <li><a href="#hero" style={linkStyles} onClick={() => setIsMenuOpen(false)} onMouseEnter={(e) => e.target.style.color = 'var(--accent-primary)'} onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}>Home</a></li>
+        <li><a href="#skills" style={linkStyles} onClick={() => setIsMenuOpen(false)} onMouseEnter={(e) => e.target.style.color = 'var(--accent-primary)'} onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}>Skills</a></li>
+        <li><a href="#projects" style={linkStyles} onClick={() => setIsMenuOpen(false)} onMouseEnter={(e) => e.target.style.color = 'var(--accent-primary)'} onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}>Projects</a></li>
+        <li><a href="#contact" style={linkStyles} onClick={() => setIsMenuOpen(false)} onMouseEnter={(e) => e.target.style.color = 'var(--accent-primary)'} onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}>Contact</a></li>
+        <li><a href="/prakash_resume.pdf" target="_blank" rel="noreferrer" style={linkStyles} onClick={() => setIsMenuOpen(false)} onMouseEnter={(e) => e.target.style.color = 'var(--accent-primary)'} onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}>Resume</a></li>
         
         <li style={dropdownContainer}>
           <Palette size={16} style={{ color: 'var(--accent-primary)' }} />
