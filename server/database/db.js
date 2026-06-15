@@ -185,7 +185,7 @@ export async function initDb() {
       description: "An interactive DOM event-handling demonstration utilizing custom click handlers, state toggling, and glowing SVG visuals.",
       live_url: "https://bulb-switch-project-javascript-dom-and.onrender.com",
       github_url: "https://github.com/PRAKASH-REDDY33841/bulb-switch-project-javascript-Dom-and-Event-Fundamentals.git",
-      image_url: "https://images.unsplash.com/photo-1490623970972-ae8bb3da45e9?auto=format&fit=crop&w=800&q=80",
+      image_url: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
       category: "Frontend (HTML/CSS/JS)"
     }
   ];
@@ -276,12 +276,6 @@ export async function initDb() {
 
   // Seed Certifications
   const defaultCertifications = [
-    {
-      name: "Oracle APEX Cloud Developer Certified Professional",
-      issuer: "Oracle",
-      date: "2024",
-      link: "https://education.oracle.com/"
-    },
     {
       name: "Build a Static Website",
       issuer: "NxtWave / NxtWave Academy",

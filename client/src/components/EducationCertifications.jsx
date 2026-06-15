@@ -30,12 +30,6 @@ const fallbackEdu = [
 
 const fallbackCert = [
   {
-    name: "Oracle APEX Cloud Developer Certified Professional",
-    issuer: "Oracle",
-    date: "2024",
-    link: "https://education.oracle.com/"
-  },
-  {
     name: "Build a Static Website",
     issuer: "NxtWave / NxtWave Academy",
     date: "2023",
