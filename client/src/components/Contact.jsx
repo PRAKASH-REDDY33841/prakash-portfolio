@@ -50,7 +50,7 @@ export default function Contact() {
   const containerStyles = {
     maxWidth: '650px',
     margin: '0 auto',
-    padding: '40px',
+    padding: 'clamp(20px, 5vw, 40px)',
   };
 
   const titleStyles = {
